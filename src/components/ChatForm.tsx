@@ -1,64 +1,69 @@
+
 import { useRef } from "react";
+import type { ChatMessageType } from "./types";
 
-const ChatForm = ({ chatHistory,setChatHistory, generateBotResponse, topics }) => {
-  const inputRef = useRef();
-
-  const handleFormSubmit = (e) => {
-  e.preventDefault();
-  const userMessage = inputRef.current.value.trim();
-  if (!userMessage) return;
-
-  const lowerCaseMsg = userMessage.toLowerCase();
-  inputRef.current.value = "";
-
-  setChatHistory(history => [
-    ...history,
-    { role: "user", text: userMessage }
-  ]);
-
-  if (topics[capitalize(lowerCaseMsg)]) {
-    // Found in topics, reply directly
-    setChatHistory(history => [
-      ...history,
-      { role: "model", text: topics[capitalize(lowerCaseMsg)] }
-    ]);
-  } else {
-    // Not found — fallback to backend
-    setChatHistory(history => [
-      ...history,
-      { role: "model", text: "Thinking..." }
-    ]);
-    generateBotResponse([
-      ...chatHistory,
-      { role: "user", text: userMessage }
-    ]);
-  }
+type ChatFormProps = {
+  chatHistory: ChatMessageType[];
+  setChatHistory: React.Dispatch<React.SetStateAction<ChatMessageType[]>>;
+  generateBotResponse: (history: ChatMessageType[]) => Promise<void>;
+  topics: Record<string, string>;
 };
 
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse, topics }: ChatFormProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // const handleFormSubmit = (e) => {
-  //   e.preventDefault();
-  //   const userMessage = inputRef.current.value.trim();
-  //   if (!userMessage) {
-  //     return;
-  //   }
-  //   inputRef.current.value = "";
-  //   setChatHistory(history => [...history, {role: "user", text: userMessage}])
+  const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
-  //   setTimeout(() => setChatHistory(history => [...history, {role: "model", text: "Thinking..."}]),
-  //   generateBotResponse([...chatHistory, { role: "user", text: `Using the details provided above, please address this query` }]), 600)
-  // }
-  return (
-    <div>
-        <form action="#" className="chat-form" onSubmit={handleFormSubmit}>
-            <input ref={inputRef} type="text" name="" placeholder="Message..." className="message-input" required />
-            <button className="material-symbols-outlined">
-              arrow_upward
-            </button>
-        </form>
-    </div>
-  )
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const userMessage = inputRef.current?.value.trim();
+    if (!userMessage) return;
+
+    const lowerCaseMsg = userMessage.toLowerCase();
+    // inputRef.current.value = "";
+    if (inputRef.current) {
+  inputRef.current.value = "";
 }
 
-export default ChatForm
+    setChatHistory((history) => [
+      ...history,
+      { role: "user", text: userMessage, hideInChat: false }
+    ]);
+
+    const capitalizedKey = capitalize(lowerCaseMsg);
+
+    if (topics[capitalizedKey]) {
+      // Match found in topics
+      setChatHistory((history) => [
+        ...history,
+        { role: "model", text: topics[capitalizedKey], hideInChat: false }
+      ]);
+    } else {
+      // No match: fallback
+      setChatHistory((history) => [
+        ...history,
+        { role: "model", text: "Thinking...", hideInChat: false }
+      ]);
+
+      generateBotResponse([
+        ...chatHistory,
+        { role: "user", text: userMessage, hideInChat: false }
+      ]);
+    }
+  };
+
+  return (
+    <form className="chat-form" onSubmit={handleFormSubmit}>
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Message..."
+        className="message-input"
+        required
+      />
+      <button className="material-symbols-outlined">arrow_upward</button>
+    </form>
+  );
+};
+
+export default ChatForm;

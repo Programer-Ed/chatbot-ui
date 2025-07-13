@@ -1,4 +1,4 @@
-export const topics = {
+export const topics: Record<"Anime" | "Skills" | "Experience" | "Education" | "Elevator-pitch", string> = {
   Anime: `
 Anime is more than just entertainment — it’s a philosophy of creativity, resilience, and imagination. Watching characters push beyond their limits inspires me to push beyond mine as a developer and creator.
 
