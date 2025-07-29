@@ -60,31 +60,7 @@ When answering questions, use the structured data available in the portfolio. If
 Speak in a human tone — informative but with charm and chill energy.
 `.trim();
 }
-console.log("🧠 Final System Prompt:", customSystemPrompt);
-
-
-
-//   if (matchedTopic) {
-//     customSystemPrompt = `
-// You're a portfolio chatbot. The user is asking about **"${matchedTopic}"**.
-
-// Here's what the portfolio says:
-
-// ${topics[matchedTopic as keyof typeof topics]}
-
-// Your job:
-// - Use this info to answer the user’s question.
-// - Don’t just repeat — explain, connect, and clarify.
-// - Sound helpful, clever, and slightly witty.
-// - Be concise but not dry.
-// `.trim();
-//   } else {
-//     customSystemPrompt = `
-// You're an AI chatbot for a developer portfolio. You answer user questions based on structured topic data...
-
-// (etc.)
-// `.trim();
-//   }
+// console.log("🧠 Final System Prompt:", customSystemPrompt);
 
   const requestBody = [
     { role: "user", parts: [{ text: `Instruction: ${customSystemPrompt}` }] },

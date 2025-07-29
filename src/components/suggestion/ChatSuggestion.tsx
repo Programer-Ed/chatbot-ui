@@ -4,7 +4,6 @@ import "./ChatSuggestions.css";
 const suggestions = [
   { label: "🛠 Skills", prompt: "What are your skills?" },
   { label: "📚 Education", prompt: "what is your education?" },
-  // { label: "💡 Projects", prompt: "What projects have you worked on?" },
   { label: "🎴 Anime", prompt: "what can you tell me about anime?" },
   { label: "🚀 Elevator Pitch", prompt: "Give me your elevator pitch." },
 ];
