@@ -34,26 +34,57 @@ function App() {
   let customSystemPrompt: string;
 
   if (matchedTopic) {
-    customSystemPrompt = `
-You're a portfolio chatbot. The user is asking about **"${matchedTopic}"**.
+  customSystemPrompt = `
+You are a portfolio chatbot named GojoBot, representing a full-stack developer.
 
-Here's what the portfolio says:
+📌 The user just asked about: "${matchedTopic}"
 
+🧠 Here is the official info straight from his portfolio:
+---
 ${topics[matchedTopic as keyof typeof topics]}
+---
 
-Your job:
-- Use this info to answer the user’s question.
-- Don’t just repeat — explain, connect, and clarify.
-- Sound helpful, clever, and slightly witty.
-- Be concise but not dry.
+🎯 Your job:
+- Use ONLY the above content to answer.
+- Don’t invent or generalize — personalize.
+- Expand or clarify only if needed, but stay grounded in the provided data.
+- Keep the tone witty, warm, and confident — like a developer who watches anime and writes elegant code.
+- Be concise but engaging — no dry textbook replies.
 `.trim();
-  } else {
-    customSystemPrompt = `
-You're an AI chatbot for a developer portfolio. You answer user questions based on structured topic data...
+} else {
+  customSystemPrompt = `
+You are GojoBot — a friendly, clever AI chatbot helping users explore a developer's portfolio.
 
-(etc.)
+When answering questions, use the structured data available in the portfolio. If unsure or if the topic isn’t matched, ask the user to clarify.
+
+Speak in a human tone — informative but with charm and chill energy.
 `.trim();
-  }
+}
+console.log("🧠 Final System Prompt:", customSystemPrompt);
+
+
+
+//   if (matchedTopic) {
+//     customSystemPrompt = `
+// You're a portfolio chatbot. The user is asking about **"${matchedTopic}"**.
+
+// Here's what the portfolio says:
+
+// ${topics[matchedTopic as keyof typeof topics]}
+
+// Your job:
+// - Use this info to answer the user’s question.
+// - Don’t just repeat — explain, connect, and clarify.
+// - Sound helpful, clever, and slightly witty.
+// - Be concise but not dry.
+// `.trim();
+//   } else {
+//     customSystemPrompt = `
+// You're an AI chatbot for a developer portfolio. You answer user questions based on structured topic data...
+
+// (etc.)
+// `.trim();
+//   }
 
   const requestBody = [
     { role: "user", parts: [{ text: `Instruction: ${customSystemPrompt}` }] },
@@ -114,19 +145,49 @@ You're an AI chatbot for a developer portfolio. You answer user questions based 
 
         <div className="chat-footer">
           <ChatSuggestions
-          onSend={async (prompt) => {
-          const userMessage = { role: "user", text: prompt, hideInChat: false };
+        //   onSend={async (prompt) => {
+        //   const userMessage = { role: "user", text: prompt, hideInChat: false };
+        //   const thinkingMsg = { role: "model", text: "Thinking...", hideInChat: false };
+        //   const updatedHistory = [...chatHistory, userMessage, thinkingMsg];
 
-          setChatHistory((prev) => [
-            ...prev,
-            userMessage,
-            { role: "model", text: "Thinking...", hideInChat: false },
-          ]);
+        //   setChatHistory(updatedHistory);
 
-          setTimeout(() => {
-            generateBotResponse([...chatHistory, userMessage]);
-          }, 500);
-        }}
+        //   setTimeout(() => {
+        //     generateBotResponse(updatedHistory);
+        //   }, 500);
+        // }}
+
+        onSend={async (prompt) => {
+  const userMessage: ChatMessageType = { role: "user", text: prompt, hideInChat: false };
+  const thinkingMsg: ChatMessageType = { role: "model", text: "Thinking...", hideInChat: false };
+  const updatedHistory: ChatMessageType[] = [...chatHistory, userMessage, thinkingMsg];
+
+  setChatHistory(updatedHistory);
+  generateBotResponse(updatedHistory);
+}}
+
+//         onSend={async (prompt) => {
+//   const userMessage = { role: "user", text: prompt, hideInChat: false };
+//   const thinkingMsg = { role: "model", text: "Thinking...", hideInChat: false };
+//   const updatedHistory = [...chatHistory, userMessage, thinkingMsg];
+
+//   setChatHistory(updatedHistory);
+//   generateBotResponse(updatedHistory);
+// }}
+
+        //   onSend={async (prompt) => {
+        //   const userMessage = { role: "user", text: prompt, hideInChat: false };
+
+        //   setChatHistory((prev) => [
+        //     ...prev,
+        //     userMessage,
+        //     { role: "model", text: "Thinking...", hideInChat: false },
+        //   ]);
+
+        //   setTimeout(() => {
+        //     generateBotResponse([...chatHistory, userMessage]);
+        //   }, 500);
+        // }}
 
         />
           <ChatForm

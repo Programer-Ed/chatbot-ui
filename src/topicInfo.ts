@@ -1,4 +1,4 @@
-export const topics: Record<"Anime" | "Skills" | "Experience" | "Education" | "Elevator-pitch", string> = {
+export const topics: Record<"Anime" | "Skills" | "Experience" | "Education" | "ElevatorPitch", string> = {
   Anime: `
 Anime is more than just entertainment — it’s a philosophy of creativity, resilience, and imagination. Watching characters push beyond their limits inspires me to push beyond mine as a developer and creator.
 
@@ -52,7 +52,7 @@ How Anime Influences My Work
 - Ongoing: Bachelor of Science in Information Technology
   `,
 
-  "Elevator-pitch": `
+  "ElevatorPitch": `
 Hi, I’m Edwin — a creative, resilient software engineer who crafts user-centric web experiences with clean code and bold ideas. Whether it’s a scalable app, an AI-powered chatbot, or an elegant UI, I approach every project like a hero’s journey: learning, growing, and delivering.
   `
 };
